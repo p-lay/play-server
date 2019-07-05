@@ -1,4 +1,4 @@
-import { Column } from "typeorm"
+import { PrimaryGeneratedColumn, Column } from "typeorm"
 
 export class CommonEntity {
   @Column("datetime", { precision: 3, default: () => "CURRENT_TIMESTAMP(3)" })

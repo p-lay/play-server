@@ -18,7 +18,7 @@ export class VueEntity extends CommonEntity {
   @Column({
     length: 500,
   })
-  tags: string
+  tag_ids: string
 
   // json.stringify(array)
   @Column({
@@ -31,6 +31,9 @@ export class VueEntity extends CommonEntity {
     default: "",
   })
   music: string
+
+  @Column()
+  create_by: number
 
   // json.stringify(array)
   @Column({

@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common"
-import { AppController } from "../controller/app.controller"
-import { AppService } from "../service/app.service"
+import { VueController } from "../controller/vue.controller"
+import { VueService } from "../service/vue.service"
+import { ResourceService } from "../service/resource.service"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { CommentEntity } from "../entity/comment.entity"
 import { ResourceEntity } from "../entity/resource.entity"
@@ -20,7 +21,7 @@ const entities = [
 @Module({
   imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature(entities)],
 
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [VueController],
+  providers: [VueService, ResourceService],
 })
 export class AppModule {}

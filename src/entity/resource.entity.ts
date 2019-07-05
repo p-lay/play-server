@@ -19,6 +19,8 @@ export class ResourceEntity extends CommonEntity {
   })
   url: string
 
-  @Column()
+  @Column({
+    default: "image",
+  })
   type: string
 }
