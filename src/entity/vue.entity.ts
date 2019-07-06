@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import { CommonEntity } from "./common.entity"
+import { columnOption, longLength } from "../util/entity"
 
 @Entity("vue")
 export class VueEntity extends CommonEntity {
@@ -10,25 +11,22 @@ export class VueEntity extends CommonEntity {
   title: string
 
   @Column({
-    length: 500,
+    length: longLength,
+    nullable: true,
   })
   feeling: string
 
   // json.stringify(array)
-  @Column({
-    length: 500,
-  })
+  @Column(columnOption.json)
   tag_ids: string
 
   // json.stringify(array)
-  @Column({
-    length: 500,
-  })
+  @Column(columnOption.json)
   resource_ids: string
 
   @Column({
     length: 200,
-    default: "",
+    nullable: true,
   })
   music: string
 
@@ -38,6 +36,7 @@ export class VueEntity extends CommonEntity {
   // json.stringify(array)
   @Column({
     length: 500,
+    nullable: true,
   })
   comments: string
 

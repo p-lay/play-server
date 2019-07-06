@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import { CommonEntity } from "./common.entity"
+import { longLength } from "../util/entity"
 
 @Entity("resource")
 export class ResourceEntity extends CommonEntity {
@@ -7,9 +8,8 @@ export class ResourceEntity extends CommonEntity {
   id: number
 
   @Column({
-    type: "char",
-    length: 20,
-    default: "",
+    length: longLength,
+    nullable: true,
   })
   description: string
 
