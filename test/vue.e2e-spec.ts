@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../src/module/app.module"
-import { AddVueReq } from "../src/type/vue"
+import { AddVueReq } from "../src/contract/vue"
 
 const description =
   "description-hahahahahahadfddddddddddddddddd ssssssssssssss aaaaaaaaaaaaaaaaaa fffffffffffff bbbbbbbbbbbbbb vvvvvvvvvvvvvvv"

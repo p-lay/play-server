@@ -2,7 +2,12 @@ import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import { ResourceEntity } from "../entity/resource.entity"
-import { Resource } from "../type/resource"
+import {
+  AddResourceReq,
+  GetResourceReq,
+  GetResourceRes,
+} from "../contract/resource"
+import { In } from "typeorm"
 
 @Injectable()
 export class ResourceService {
@@ -11,15 +16,29 @@ export class ResourceService {
     private readonly resourceRepo: Repository<ResourceEntity>,
   ) {}
 
-  async addResource(param: Resource[]) {
-    const resources = param.map(x => {
+  async addResource(param: AddResourceReq) {
+    const result = param.resources.map(x => {
       const resource = new ResourceEntity()
       resource.url = x.url
       resource.description = x.description
       resource.type = x.type
       return resource
     })
-    const value = await this.resourceRepo.save(resources)
+    const value = await this.resourceRepo.save(result)
     return value.map(x => x.id)
+  }
+
+  async getResource(param: GetResourceReq): Promise<GetResourceRes> {
+    const entities = await this.resourceRepo.find({
+      id: In(param.resource_ids),
+    })
+    return {
+      resources: entities.map(x => ({
+        id: x.id,
+        url: x.url,
+        type: x.type as any,
+        description: x.description,
+      })),
+    }
   }
 }
