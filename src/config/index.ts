@@ -9,8 +9,8 @@ let config = {
   port: 3000,
   hostName: "localhost",
 
-  AppID: "wxe504e52c0d7a966d",
-  AppSecret: "ef2c33c9807d24a3ea4f379dbdd0dfd6",
+  AppID: "wx543e380c0605e7f9",
+  AppSecret: "49031a6db6cac75896daf6ddb5d7641f",
 
   orm: {
     type: "mysql",
