@@ -10,7 +10,7 @@ let config = {
   hostName: 'localhost',
 
   AppID: 'wx543e380c0605e7f9',
-  AppSecret: '49031a6db6cac75896daf6ddb5d7641f',
+  AppSecret: '49031a6db6cac75896daf6ddb5d7641f', // !!!!!!!!!!!
 
   orm: {
     type: 'mysql',
@@ -26,6 +26,12 @@ let config = {
     dropSchema: false,
     synchronize: true,
     logging: true,
+  },
+
+  qiniu: {
+    ak: 'JveHPNkOjWM_S3a9LipKNz8vZdsJJkmTKzZNwenx',
+    sk: '_7_LKMIxOro5fbpx0LOcGCXq-lX6hsCHduZiw0fX', // !!!!!
+    bucket: 'matthew5-qiniu',
   },
 }
 

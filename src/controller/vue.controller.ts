@@ -5,11 +5,11 @@ import { CommonRes } from '../contract/global'
 
 @Controller()
 export class VueController {
-  constructor(private readonly vueService: VueService) {}
+  constructor(private readonly service: VueService) {}
 
   @Post('addVue')
   async addVue(@Body() param: AddVueReq): CommonRes {
-    const data = await this.vueService.addVue(param)
+    const data = await this.service.addVue(param)
     return {
       data,
     }
@@ -17,7 +17,7 @@ export class VueController {
 
   @Post('getVue')
   async getVue(@Body() param: GetVueReq): CommonRes {
-    const data = await this.vueService.getVue(param)
+    const data = await this.service.getVue(param)
     return {
       data,
     }
@@ -25,7 +25,7 @@ export class VueController {
 
   @Post('updateVue')
   async updateVue(@Body() param: UpdateVueReq): CommonRes {
-    const data = this.vueService.updateVue(param)
+    const data = this.service.updateVue(param)
     return {
       data,
     }

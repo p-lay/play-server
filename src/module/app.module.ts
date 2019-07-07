@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common'
 import { VueController } from '../controller/vue.controller'
+import { QiniuController } from '../controller/qiniu.controller'
 import { VueService } from '../service/vue.service'
 import { ResourceService } from '../service/resource.service'
+import { QiniuService } from '../service/qiniu.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CommentEntity } from '../entity/comment.entity'
 import { ResourceEntity } from '../entity/resource.entity'
@@ -25,7 +27,7 @@ const entities = [
     TypeOrmModule.forFeature(entities),
   ],
 
-  controllers: [VueController],
-  providers: [VueService, ResourceService],
+  controllers: [VueController, QiniuController],
+  providers: [VueService, ResourceService, QiniuService],
 })
 export class AppModule {}
