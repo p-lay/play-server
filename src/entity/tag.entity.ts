@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-import { CommonEntity } from "./common.entity"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { CommonEntity } from './common.entity'
 
-@Entity("tag")
+@Entity('tag')
 export class TagEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number

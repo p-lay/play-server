@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-import { CommonEntity } from "./common.entity"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { CommonEntity } from './common.entity'
 
-@Entity("user")
+@Entity('user')
 export class UserEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number
@@ -10,15 +10,15 @@ export class UserEntity extends CommonEntity {
   role_id: number
 
   @Column({
-    type: "char",
+    type: 'char',
     length: 20,
-    default: "",
+    default: '',
   })
   name: string
 
   @Column({
     length: 200,
-    default: "",
+    default: '',
   })
   avatar: string
 

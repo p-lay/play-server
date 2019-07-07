@@ -1,5 +1,5 @@
-import { BaseResource } from "./resource"
-import { Tag } from "./tag"
+import { BaseResource } from './resource'
+import { Tag } from './tag'
 
 export interface BaseVue {
   title: string

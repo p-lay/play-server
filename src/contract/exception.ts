@@ -1,4 +1,4 @@
-import { Code } from "../contract/global"
+import { Code } from '../contract/global'
 
 export class Exception {
   constructor(code: Code, message?: string) {
@@ -19,9 +19,9 @@ export class Exception {
   codeToMsg(code: Code) {
     switch (code) {
       case 1000:
-        return "no data in table"
+        return 'no data in table'
       case 2000:
-        return ""
+        return ''
     }
   }
 }

@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-import { CommonEntity } from "./common.entity"
-import { longLength } from "../util/entity"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { CommonEntity } from './common.entity'
+import { longLength } from '../util/entity'
 
-@Entity("resource")
+@Entity('resource')
 export class ResourceEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number
@@ -15,12 +15,12 @@ export class ResourceEntity extends CommonEntity {
 
   @Column({
     length: 200,
-    default: "",
+    default: '',
   })
   url: string
 
   @Column({
-    default: "image",
+    default: 'image',
   })
   type: string
 }

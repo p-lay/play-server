@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-import { CommonEntity } from "./common.entity"
-import { columnOption, longLength } from "../util/entity"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { CommonEntity } from './common.entity'
+import { columnOption, longLength } from '../util/entity'
 
-@Entity("vue")
+@Entity('vue')
 export class VueEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number

@@ -1,13 +1,13 @@
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
-import { ResourceEntity } from "../entity/resource.entity"
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { ResourceEntity } from '../entity/resource.entity'
 import {
   AddResourceReq,
   GetResourceReq,
   GetResourceRes,
-} from "../contract/resource"
-import { In } from "typeorm"
+} from '../contract/resource'
+import { In } from 'typeorm'
 
 @Injectable()
 export class ResourceService {
