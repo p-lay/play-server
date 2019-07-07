@@ -1,0 +1,10 @@
+apps:
+  - script: ./dist/main.js
+    instances: 1
+    exec_mode: cluster
+    env:
+      name: play-sit
+      NODE_ENV: SIT
+    env_production:
+      name: play-prod
+      NODE_ENV: PROD

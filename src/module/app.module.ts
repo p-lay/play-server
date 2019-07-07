@@ -9,6 +9,7 @@ import { TagEntity } from "../entity/tag.entity"
 import { UserEntity } from "../entity/user.entity"
 import { UserStarsEntity } from "../entity/userStars.entity"
 import { VueEntity } from "../entity/vue.entity"
+import { config } from "../config"
 
 const entities = [
   CommentEntity,
@@ -19,7 +20,10 @@ const entities = [
   VueEntity,
 ]
 @Module({
-  imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature(entities)],
+  imports: [
+    TypeOrmModule.forRoot(config.orm as any),
+    TypeOrmModule.forFeature(entities),
+  ],
 
   controllers: [VueController],
   providers: [VueService, ResourceService],
