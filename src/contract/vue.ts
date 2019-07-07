@@ -27,10 +27,6 @@ export interface GetVueRes extends BaseVue {
   update_time: Date
 }
 
-export interface UpdateVueReq {
+export interface UpdateVueReq extends BaseVue {
   vue_id: number
-  title: string
-  feeling?: string
-  tags: string[]
-  music?: string
 }
