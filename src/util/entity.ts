@@ -6,3 +6,6 @@ export const columnOption = {
     default: "",
   },
 }
+export const getTimeStampByDate = (date: Date) => {
+  return Number((date.getTime() / 1000).toFixed(0))
+}

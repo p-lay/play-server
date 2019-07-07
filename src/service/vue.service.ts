@@ -5,6 +5,7 @@ import { VueEntity } from "../entity/vue.entity"
 import { ResourceService } from "./resource.service"
 import { AddVueReq, UpdateVueReq, GetVueReq, GetVueRes } from "../contract/vue"
 import { Exception } from "../contract/exception"
+import { getTimeStampByDate } from "../util/entity"
 
 @Injectable()
 export class VueService {
@@ -50,8 +51,8 @@ export class VueService {
         comments: JSON.parse(entity.comments),
         // TODO: get user info, not id
         create_by: entity.create_by,
-        create_time: entity.create_time,
-        update_time: entity.update_time,
+        create_time: getTimeStampByDate(entity.create_time),
+        update_time: getTimeStampByDate(entity.update_time),
         title: entity.title,
         feeling: entity.feeling,
         music: entity.music,
