@@ -6,8 +6,8 @@ const isSit = process.env.NODE_ENV === 'SIT'
 const isProd = process.env.NODE_ENV === 'PROD'
 
 let config = {
-  port: 3100,
-  hostName: 'localhost',
+  port: 3000,
+  hostName: '0.0.0.0',
 
   AppID: 'wx543e380c0605e7f9',
   AppSecret: '49031a6db6cac75896daf6ddb5d7641f', // !!!!!!!!!!!

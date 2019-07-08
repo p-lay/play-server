@@ -1,5 +1,5 @@
 export default {
-  port: 3101,
+  port: 3001,
   orm: {
     port: 3311,
     username: 'root',
