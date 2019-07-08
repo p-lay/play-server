@@ -6,7 +6,7 @@ const isSit = process.env.NODE_ENV === 'SIT'
 const isProd = process.env.NODE_ENV === 'PROD'
 
 let config = {
-  port: 3000,
+  port: 3100,
   hostName: 'localhost',
 
   AppID: 'wx543e380c0605e7f9',
