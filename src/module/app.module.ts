@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { AppController } from '../controller/app.controller'
 import { VueController } from '../controller/vue.controller'
 import { QiniuController } from '../controller/qiniu.controller'
 import { VueService } from '../service/vue.service'
@@ -27,7 +28,7 @@ const entities = [
     TypeOrmModule.forFeature(entities),
   ],
 
-  controllers: [VueController, QiniuController],
+  controllers: [AppController, VueController, QiniuController],
   providers: [VueService, ResourceService, QiniuService],
 })
 export class AppModule {}
