@@ -6,7 +6,7 @@ import {
   AddResourceReq,
   GetResourceReq,
   GetResourceRes,
-} from '../contract/resource'
+} from '../../contract/resource'
 import { In } from 'typeorm'
 
 @Injectable()

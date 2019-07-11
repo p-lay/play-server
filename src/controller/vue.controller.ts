@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common'
 import { VueService } from '../service/vue.service'
-import { AddVueReq, UpdateVueReq, GetVueReq } from '../contract/vue'
-import { CommonRes } from '../contract/global'
+import { AddVueReq, UpdateVueReq, GetVueReq, GetVueRes } from '../../contract/vue'
+import { CommonRes } from '../../contract/global'
 
 @Controller()
 export class VueController {
@@ -16,7 +16,7 @@ export class VueController {
   }
 
   @Post('getVue')
-  async getVue(@Body() param: GetVueReq): CommonRes {
+  async getVue(@Body() param: GetVueReq): CommonRes<GetVueRes> {
     const data = await this.service.getVue(param)
     return {
       data,

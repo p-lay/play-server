@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body } from '@nestjs/common'
-import { CommonRes } from '../contract/global'
+import { CommonRes } from '../../contract/global'
 
 @Controller()
 export class AppController {

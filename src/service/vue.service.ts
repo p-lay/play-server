@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { VueEntity } from '../entity/vue.entity'
 import { ResourceService } from './resource.service'
-import { AddVueReq, UpdateVueReq, GetVueReq, GetVueRes } from '../contract/vue'
-import { Exception } from '../contract/exception'
+import { AddVueReq, UpdateVueReq, GetVueReq, GetVueRes } from '../../contract/vue'
+import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
 
 @Injectable()
@@ -12,7 +12,8 @@ export class VueService {
   constructor(
     @InjectRepository(VueEntity)
     private readonly vueRepo: Repository<VueEntity>,
-    @Inject(ResourceService) private readonly resourceService: ResourceService,
+    @Inject(ResourceService)
+    private readonly resourceService: ResourceService,
   ) {}
 
   async addVue(param: AddVueReq) {

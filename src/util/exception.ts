@@ -1,4 +1,4 @@
-import { Code } from '../contract/global'
+import { Code } from '../../contract/global'
 
 export class Exception {
   constructor(code: Code, message?: string) {
