@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { VueEntity } from '../entity/vue.entity'
 import { ResourceService } from './resource.service'
-import { AddVueReq, UpdateVueReq, GetVueReq, GetVueRes } from '../../contract/vue'
+import {
+  AddVueReq,
+  UpdateVueReq,
+  GetVueReq,
+  GetVueRes,
+} from '../../contract/vue'
 import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
 
@@ -69,5 +74,9 @@ export class VueService {
   async updateVue(param: UpdateVueReq) {
     const value = await this.vueRepo.find()
     return value
+  }
+
+  async getVueList() {
+    return await this.vueRepo.find()
   }
 }
