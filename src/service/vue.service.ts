@@ -8,7 +8,7 @@ import {
   UpdateVueReq,
   GetVueReq,
   GetVueRes,
-} from '../../contract/vue'
+} from '../../contract/memoria'
 import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
 
@@ -77,6 +77,9 @@ export class VueService {
   }
 
   async getVueList() {
-    return await this.vueRepo.find()
+    const memorias = await this.vueRepo.find()
+    return {
+      memorias: memorias.map(x => ({ id: x.id, title: x.title })),
+    }
   }
 }

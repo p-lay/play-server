@@ -5,7 +5,8 @@ import {
   UpdateVueReq,
   GetVueReq,
   GetVueRes,
-} from '../../contract/vue'
+  GetMemoriaListRes,
+} from '../../contract/memoria'
 import { CommonRes } from '../../contract/global'
 
 @Controller()
@@ -36,8 +37,8 @@ export class VueController {
     }
   }
 
-  @Post('getVueList')
-  async getVueList(): CommonRes {
+  @Post('getMemoriaList')
+  async getMemoriaList(): CommonRes<GetMemoriaListRes> {
     const data = await this.service.getVueList()
     return {
       data,

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common'
 import { QiniuService } from '../service/qiniu.service'
-import { AddVueReq, UpdateVueReq, GetVueReq } from '../../contract/vue'
+import { AddVueReq, UpdateVueReq, GetVueReq } from '../../contract/memoria'
 import { CommonRes } from '../../contract/global'
 import { GetQiniuTokenRes } from '../../contract/qiniu'
 
