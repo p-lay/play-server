@@ -1,8 +1,9 @@
-const { execSync } = require("child_process")
-const isProd = process.argv.includes("--prod")
-const instanceName = isProd ? "play-prod" : "play-sit"
+const { execSync } = require('child_process')
+const isProd = process.argv.includes('--prod')
+const instanceName = isProd ? 'play-prod' : 'play-sit'
 
-execSync("yarn build")
+console.log('start build...')
+execSync('yarn build')
 
 let isNewIns = false
 try {
@@ -11,8 +12,17 @@ try {
   isNewIns = err.message.includes("doesn't exist")
 }
 
-if (isNewIns) {
-  execSync(`pm2 start ./deploy/play.pm2.yaml ${isProd ? "--env production" : ""}`)
-} else {
-  execSync(`pm2 restart ${instanceName}`)
+console.log(`start deploy ${instanceName}...`)
+try {
+  if (isNewIns) {
+    execSync(
+      `pm2 start ./deploy/play.pm2.yaml ${isProd ? '--env production' : ''} --update-env`,
+    )
+  } else {
+    execSync(`pm2 restart ${instanceName}`)
+  }
+} catch (err) {
+  console.log(`!!!${isNewIns ? 'new' : 'restart'} error`, err)
 }
+
+console.log('finish...')
