@@ -29,6 +29,12 @@ export class ResourceService {
   }
 
   async getResource(param: GetResourceReq): Promise<GetResourceRes> {
+    if (!param.resource_ids || !param.resource_ids.length) {
+      return {
+        resources: [],
+      }
+    }
+    
     const entities = await this.resourceRepo.find({
       id: In(param.resource_ids),
     })

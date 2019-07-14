@@ -12,7 +12,7 @@ export class VueEntity extends CommonEntity {
 
   @Column({
     length: longLength,
-    nullable: true,
+    default: '',
   })
   feeling: string
 
@@ -26,7 +26,7 @@ export class VueEntity extends CommonEntity {
 
   @Column({
     length: 200,
-    nullable: true,
+    default: '',
   })
   music: string
 

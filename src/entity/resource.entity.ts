@@ -9,7 +9,7 @@ export class ResourceEntity extends CommonEntity {
 
   @Column({
     length: longLength,
-    nullable: true,
+    default: '',
   })
   description: string
 
