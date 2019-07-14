@@ -5,7 +5,7 @@ const instanceName = isProd ? 'play-prod' : 'play-sit'
 console.log(`start deploy ${instanceName}`)
 
 console.log('fetching...')
-execSync('git submodule update')
+execSync('git submodule update --remote')
 execSync('git pull')
 
 console.log('building...')
