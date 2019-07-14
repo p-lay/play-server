@@ -79,8 +79,8 @@ export class VueService {
     if (value) {
       const updateInfo = {
         title: param.title,
-        feeling: param.feeling,
-        music: param.music,
+        feeling: param.feeling || '',
+        music: param.music || '',
         resource_ids: '',
         tag_ids: '',
       }
