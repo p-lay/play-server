@@ -8,6 +8,7 @@ import {
   UpdateVueReq,
   GetVueReq,
   GetVueRes,
+  DeleteMemoriaReq,
 } from '../../contract/memoria'
 import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
@@ -72,14 +73,48 @@ export class VueService {
   }
 
   async updateVue(param: UpdateVueReq) {
-    const value = await this.vueRepo.find()
-    return value
+    const value = await this.vueRepo.findOne({
+      id: param.id,
+    })
+    if (value) {
+      const updateInfo = {
+        title: param.title,
+        feeling: param.feeling,
+        music: param.music,
+        resource_ids: '',
+        tag_ids: '',
+      }
+      const resourceIds = JSON.parse(value.resource_ids)
+      await this.resourceService.deleteResource({
+        ids: resourceIds,
+      })
+      const resource_ids = await this.resourceService.addResource({
+        resources: param.resources,
+      })
+      updateInfo.resource_ids = JSON.stringify(resource_ids)
+      // TODO
+      updateInfo.tag_ids = JSON.stringify(param.tags)
+      this.vueRepo.update(
+        {
+          id: param.id,
+        },
+        updateInfo,
+      )
+    } else {
+      throw new Exception(1000)
+    }
   }
 
-  async getVueList() {
+  async getMemoriaList() {
     const memorias = await this.vueRepo.find()
     return {
       memorias: memorias.map(x => ({ id: x.id, title: x.title })),
     }
+  }
+
+  async deleteMemoria(param: DeleteMemoriaReq) {
+    await this.vueRepo.delete({
+      id: param.id,
+    })
   }
 }

@@ -6,6 +6,7 @@ import {
   AddResourceReq,
   GetResourceReq,
   GetResourceRes,
+  DeleteResourceReq,
 } from '../../contract/resource'
 import { In } from 'typeorm'
 
@@ -29,12 +30,12 @@ export class ResourceService {
   }
 
   async getResource(param: GetResourceReq): Promise<GetResourceRes> {
-    if (!param.resource_ids || !param.resource_ids.length) {
+    if (!param.resource_ids.length) {
       return {
         resources: [],
       }
     }
-    
+
     const entities = await this.resourceRepo.find({
       id: In(param.resource_ids),
     })
@@ -45,6 +46,14 @@ export class ResourceService {
         type: x.type as any,
         description: x.description,
       })),
+    }
+  }
+
+  async deleteResource(param: DeleteResourceReq) {
+    if (param.ids.length) {
+      await this.resourceRepo.delete({
+        id: In(param.ids),
+      })
     }
   }
 }

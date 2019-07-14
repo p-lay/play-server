@@ -6,6 +6,7 @@ import {
   GetVueReq,
   GetVueRes,
   GetMemoriaListRes,
+  DeleteMemoriaReq,
 } from '../../contract/memoria'
 import { CommonRes } from '../../contract/global'
 
@@ -39,7 +40,15 @@ export class VueController {
 
   @Post('getMemoriaList')
   async getMemoriaList(): CommonRes<GetMemoriaListRes> {
-    const data = await this.service.getVueList()
+    const data = await this.service.getMemoriaList()
+    return {
+      data,
+    }
+  }
+
+  @Post('deleteMemoria')
+  async deleteMemoria(@Body() param: DeleteMemoriaReq): CommonRes {
+    const data = await this.service.deleteMemoria(param)
     return {
       data,
     }

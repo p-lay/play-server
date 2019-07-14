@@ -1,9 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { CommonEntity } from './common.entity'
 import { longLength } from '../util/entity'
 
 @Entity('resource')
-export class ResourceEntity extends CommonEntity {
+export class ResourceEntity {
   @PrimaryGeneratedColumn()
   id: number
 
