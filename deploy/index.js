@@ -2,7 +2,12 @@ const { execSync } = require('child_process')
 const isProd = process.argv.includes('--prod')
 const instanceName = isProd ? 'play-prod' : 'play-sit'
 
-console.log('start build...')
+console.log(`start deploy ${instanceName}`)
+
+console.log('fetching...')
+execSync('git pull')
+
+console.log('building...')
 execSync('yarn build')
 
 let isNewIns = false
@@ -12,7 +17,7 @@ try {
   isNewIns = err.message.includes("doesn't exist")
 }
 
-console.log(`start deploy ${instanceName}...`)
+console.log(`deploying...`)
 try {
   if (isNewIns) {
     execSync(
@@ -25,4 +30,4 @@ try {
   console.log(`!!!${isNewIns ? 'new' : 'restart'} error`, err)
 }
 
-console.log('finish...')
+console.log('finish')
