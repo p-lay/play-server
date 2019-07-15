@@ -6,19 +6,19 @@ export class UserEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   role_id: number
 
   @Column({
     type: 'char',
     length: 20,
-    default: '',
   })
   name: string
 
   @Column({
     length: 200,
-    default: '',
   })
   avatar: string
 
@@ -28,8 +28,15 @@ export class UserEntity extends CommonEntity {
   })
   openid: string
 
-  @Column({
-    default: null,
-  })
+  @Column()
   gender: number
+
+  @Column()
+  province: string
+
+  @Column()
+  city: string
+
+  @Column()
+  country: string
 }
