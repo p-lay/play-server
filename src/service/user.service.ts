@@ -27,6 +27,7 @@ export class UserService {
     if (userInfo) {
       return {
         userId: userInfo.id,
+        roleId: userInfo.role_id,
         nickName: userInfo.name,
         avatarUrl: userInfo.avatar,
         gender: userInfo.gender,
