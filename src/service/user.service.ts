@@ -33,6 +33,7 @@ export class UserService {
         province: userInfo.province,
         city: userInfo.city,
         country: userInfo.country,
+        language: userInfo.language
       }
     } else {
       throw new Exception(1000)

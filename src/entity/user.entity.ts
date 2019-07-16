@@ -39,4 +39,7 @@ export class UserEntity extends CommonEntity {
 
   @Column()
   country: string
+
+  @Column()
+  language: string
 }
