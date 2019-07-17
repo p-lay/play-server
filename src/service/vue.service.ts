@@ -68,7 +68,7 @@ export class VueService {
         tags: JSON.parse(entity.tag_ids),
       }
     } else {
-      throw new Exception(1000)
+      throw new Exception(2000)
     }
   }
 
@@ -101,7 +101,7 @@ export class VueService {
         updateInfo,
       )
     } else {
-      throw new Exception(1000)
+      throw new Exception(2000)
     }
   }
 
