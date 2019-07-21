@@ -3,7 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MemoriaEntity } from '../entity/memoria.entity'
 import { ResourceService } from './resource.service'
-import { AddMemoriaReq, GetMemoriaReq, GetMemoriaRes, UpdateMemoriaReq, GetMemoriaListRes, DeleteMemoriaReq } from '../../contract/memoria'
+import {
+  AddMemoriaReq,
+  GetMemoriaReq,
+  GetMemoriaRes,
+  UpdateMemoriaReq,
+  GetMemoriaListReq,
+  GetMemoriaListRes,
+  DeleteMemoriaReq,
+} from '../../contract/memoria'
 import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
 
@@ -99,8 +107,10 @@ export class MemoriaService {
     }
   }
 
-  async getMemoriaList(param: any) {
-    const memorias = await this.repo.find()
+  async getMemoriaList(param: GetMemoriaListReq) {
+    const memorias = await this.repo.find({
+      create_by: param.create_by,
+    })
     return {
       memorias: memorias.map(x => ({ id: x.id, title: x.title })),
     }
