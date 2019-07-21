@@ -14,7 +14,7 @@ let config = {
 
   orm: {
     type: 'mysql',
-    host: '0.0.0.0', //'106.15.233.166',
+    host: '106.15.233.166',
     port: 3310,
     username: 'root',
     password: '123456',
