@@ -1,9 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common'
-import {
-  GetUserInfoReq,
-  GetUserInfoRes,
-  UpdateUserInfoReq,
-} from '../../contract/user'
+import { GetUserInfoReq, GetUserInfoRes, UpdateUserInfoReq } from '../../contract/user'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UserEntity } from '../entity/user.entity'

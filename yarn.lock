@@ -119,6 +119,11 @@
   version "10.14.12"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.12.tgz#0eec3155a46e6c4db1f27c3e588a205f767d622f"
 
+"@types/node@^12.0.12":
+  version "12.6.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.6.8.tgz#e469b4bf9d1c9832aee4907ba8a051494357c12c"
+  integrity sha512-aX+gFgA5GHcDi89KG5keey2zf0WfZk/HAQotEamsK2kbey+8yGKcson0hbK8E+v0NArlCJQCqMP161YhV6ZXLg==
+
 "@types/qiniu@^7.0.1":
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/@types/qiniu/-/qiniu-7.0.1.tgz#5394fea99ea366be7daaa5a9198aab2dea97aba0"
@@ -3044,6 +3049,13 @@ negotiator@0.6.2:
 neo-async@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
+
+nest-ts-code-gen@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nest-ts-code-gen/-/nest-ts-code-gen-1.0.1.tgz#859e79cf19533a27f925644fa0828711e60c1699"
+  integrity sha512-MdQzSOOU0oI1x3D0+czveWrkkl3SsOo0uOIcsN8YmXZB/xgjKaZ2I2xK3ftKH9EMiIr9mUVsRcy8N1HrA+qL6Q==
+  dependencies:
+    "@types/node" "^12.0.12"
 
 next-tick@1, next-tick@^1.0.0:
   version "1.0.0"

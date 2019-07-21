@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { config } from '../config'
-import { providers } from './providers'
+import { services } from './services'
+import { customizeServices } from './customize/services'
 import { entities } from './entities'
+import { customizeEntities } from './customize/entities'
 import { controllers } from './controllers'
+import { customizeControllers } from './customize/controllers'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(config.orm as any),
-    TypeOrmModule.forFeature(entities),
+    TypeOrmModule.forFeature([...entities, ...customizeEntities]),
   ],
-  controllers,
-  providers,
+  controllers: [...controllers, ...customizeControllers],
+  providers: [...services, ...customizeServices],
 })
 export class AppModule {}
