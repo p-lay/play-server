@@ -17,28 +17,28 @@ export class MemoriaService {
   ) {}
 
   async addMemoria(param: AddMemoriaReq) {
-    const vue = new MemoriaEntity()
-    vue.feeling = param.feeling
-    vue.music = param.music
+    const memoria = new MemoriaEntity()
+    memoria.feeling = param.feeling
+    memoria.music = param.music
 
     const resources = param.resources
     const resource_ids = await this.resourceService.addResource({ resources })
-    vue.resource_ids = JSON.stringify(resource_ids)
+    memoria.resource_ids = JSON.stringify(resource_ids)
 
     // TODO
-    vue.tag_ids = JSON.stringify(param.tags)
+    memoria.tag_ids = JSON.stringify(param.tags)
 
-    vue.title = param.title
-    vue.create_by = param.user_id
+    memoria.title = param.title
+    memoria.create_by = param.user_id
 
-    const value = await this.repo.save(vue)
+    const value = await this.repo.save(memoria)
 
     return value
   }
 
   async getMemoria(param: GetMemoriaReq): Promise<GetMemoriaRes> {
     const result = await this.repo.find({
-      id: param.vue_id,
+      id: param.id,
     })
     if (result.length) {
       const entity = result[0]
@@ -48,7 +48,7 @@ export class MemoriaService {
       })
       const tagIds = JSON.parse(entity.tag_ids)
       return {
-        vue_id: entity.id,
+        id: entity.id,
         comments: JSON.parse(entity.comments),
         // TODO: get user info, not id
         create_by: entity.create_by,
