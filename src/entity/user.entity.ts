@@ -14,11 +14,13 @@ export class UserEntity extends CommonEntity {
   @Column({
     type: 'char',
     length: 20,
+    default: '',
   })
   name: string
 
   @Column({
     length: 200,
+    default: '',
   })
   avatar: string
 
@@ -28,18 +30,28 @@ export class UserEntity extends CommonEntity {
   })
   openid: string
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   gender: number
 
-  @Column()
+  @Column({
+    default: '',
+  })
   province: string
 
-  @Column()
+  @Column({
+    default: '',
+  })
   city: string
 
-  @Column()
+  @Column({
+    default: '',
+  })
   country: string
 
-  @Column()
+  @Column({
+    default: '',
+  })
   language: string
 }

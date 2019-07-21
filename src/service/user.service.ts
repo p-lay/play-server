@@ -1,5 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common'
-import { GetUserInfoReq, GetUserInfoRes, UpdateUserInfoReq } from '../../contract/user'
+import {
+  GetUserInfoReq,
+  GetUserInfoRes,
+  UpdateUserInfoReq,
+} from '../../contract/user'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UserEntity } from '../entity/user.entity'
@@ -30,10 +34,17 @@ export class UserService {
         province: userInfo.province,
         city: userInfo.city,
         country: userInfo.country,
-        language: userInfo.language
+        language: userInfo.language,
+        isNew: !userInfo.name || !userInfo.avatar,
       }
     } else {
-      throw new Exception(1000)
+      const userEntity = await this.repo.save({
+        openid: session.openid,
+      })
+      return {
+        isNew: true,
+        userId: userEntity.id,
+      } as any
     }
   }
 
@@ -45,6 +56,7 @@ export class UserService {
     entity.province = param.province
     entity.city = param.city
     entity.country = param.country
+    entity.language = param.language
 
     if (param.userId) {
       await this.repo.update(
