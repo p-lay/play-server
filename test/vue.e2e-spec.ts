@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../src/module/app.module"
-import { AddVueReq } from "../contract/memoria"
+import { AddMemoriaReq } from "../contract/memoria"
 
 const description =
   "description-hahahahahahadfddddddddddddddddd ssssssssssssss aaaaaaaaaaaaaaaaaa fffffffffffff bbbbbbbbbbbbbb vvvvvvvvvvvvvvv"
@@ -21,7 +21,7 @@ describe("Vue (e2e)", () => {
 
   it("/addVue", () => {
     console.log("begin...")
-    const param: AddVueReq = {
+    const param: AddMemoriaReq = {
       user_id: 1,
       title: "vue1",
       feeling: description,

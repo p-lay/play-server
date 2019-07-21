@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { CommonEntity } from './common.entity'
 import { columnOption, longLength } from '../util/entity'
 
-@Entity('vue')
-export class VueEntity extends CommonEntity {
+@Entity('memoria')
+export class MemoriaEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number
 

@@ -1,6 +1,6 @@
 import { UserController } from '../controller/user.controller'
-import { VueController } from '../controller/vue.controller'
+import { MemoriaController } from '../controller/memoria.controller'
 import { QiniuController } from '../controller/qiniu.controller'
 
-export const controllers = [  UserController, VueController, QiniuController
+export const controllers = [  UserController, MemoriaController, QiniuController
 ]

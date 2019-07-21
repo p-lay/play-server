@@ -1,6 +1,6 @@
 import { UserEntity } from '../entity/user.entity'
-import { VueEntity } from '../entity/vue.entity'
+import { MemoriaEntity } from '../entity/memoria.entity'
 import { ResourceEntity } from '../entity/resource.entity'
 
-export const entities = [  UserEntity, VueEntity, ResourceEntity
+export const entities = [  UserEntity, MemoriaEntity, ResourceEntity
 ]

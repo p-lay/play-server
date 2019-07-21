@@ -1,29 +1,23 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { VueEntity } from '../entity/vue.entity'
+import { MemoriaEntity } from '../entity/memoria.entity'
 import { ResourceService } from './resource.service'
-import {
-  AddVueReq,
-  UpdateVueReq,
-  GetVueReq,
-  GetVueRes,
-  DeleteMemoriaReq,
-} from '../../contract/vue'
+import { AddMemoriaReq, GetMemoriaReq, GetMemoriaRes, UpdateMemoriaReq, GetMemoriaListRes, DeleteMemoriaReq } from '../../contract/memoria'
 import { Exception } from '../util/exception'
 import { getTimeStampByDate } from '../util/entity'
 
 @Injectable()
-export class VueService {
+export class MemoriaService {
   constructor(
-    @InjectRepository(VueEntity)
-    private readonly vueRepo: Repository<VueEntity>,
+    @InjectRepository(MemoriaEntity)
+    private readonly repo: Repository<MemoriaEntity>,
     @Inject(ResourceService)
     private readonly resourceService: ResourceService,
   ) {}
 
-  async addVue(param: AddVueReq) {
-    const vue = new VueEntity()
+  async addMemoria(param: AddMemoriaReq) {
+    const vue = new MemoriaEntity()
     vue.feeling = param.feeling
     vue.music = param.music
 
@@ -37,13 +31,13 @@ export class VueService {
     vue.title = param.title
     vue.create_by = param.user_id
 
-    const value = await this.vueRepo.save(vue)
+    const value = await this.repo.save(vue)
 
     return value
   }
 
-  async getVue(param: GetVueReq): Promise<GetVueRes> {
-    const result = await this.vueRepo.find({
+  async getMemoria(param: GetMemoriaReq): Promise<GetMemoriaRes> {
+    const result = await this.repo.find({
       id: param.vue_id,
     })
     if (result.length) {
@@ -72,8 +66,8 @@ export class VueService {
     }
   }
 
-  async updateVue(param: UpdateVueReq) {
-    const value = await this.vueRepo.findOne({
+  async updateMemoria(param: UpdateMemoriaReq) {
+    const value = await this.repo.findOne({
       id: param.id,
     })
     if (value) {
@@ -94,7 +88,7 @@ export class VueService {
       updateInfo.resource_ids = JSON.stringify(resource_ids)
       // TODO
       updateInfo.tag_ids = JSON.stringify(param.tags)
-      this.vueRepo.update(
+      this.repo.update(
         {
           id: param.id,
         },
@@ -106,14 +100,14 @@ export class VueService {
   }
 
   async getMemoriaList(param: any) {
-    const memorias = await this.vueRepo.find()
+    const memorias = await this.repo.find()
     return {
       memorias: memorias.map(x => ({ id: x.id, title: x.title })),
     }
   }
 
   async deleteMemoria(param: DeleteMemoriaReq) {
-    await this.vueRepo.delete({
+    await this.repo.delete({
       id: param.id,
     })
   }
