@@ -108,9 +108,12 @@ export class MemoriaService {
   }
 
   async getMemoriaList(param: GetMemoriaListReq): Promise<GetMemoriaListRes> {
-    const memorias = await this.repo.find({
-      create_by: param.create_by,
-    })
+    const condition = param.create_by
+      ? {
+          create_by: param.create_by,
+        }
+      : null
+    const memorias = await this.repo.find(condition)
     return {
       memorias: memorias.map(x => ({ id: x.id, title: x.title })),
     }
