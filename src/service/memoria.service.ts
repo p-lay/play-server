@@ -88,14 +88,23 @@ export class MemoriaService {
         tag_ids: '',
         create_time: convertToEntityDate(param.create_time),
       }
-      const resourceIds = JSON.parse(value.resource_ids)
+      const resourceIds: number[] = JSON.parse(value.resource_ids)
+      const paramExistResourceIds = param.existResourceIds || []
+      const existResourceIds = resourceIds.filter(x =>
+        paramExistResourceIds.includes(x),
+      )
+      const toRemoveResourceIds = resourceIds.filter(
+        x => !paramExistResourceIds.includes(x),
+      )
       await this.resourceService.deleteResource({
-        ids: resourceIds,
+        ids: toRemoveResourceIds,
       })
       const resource_ids = await this.resourceService.addResource({
         resources: param.resources,
       })
-      entity.resource_ids = JSON.stringify(resource_ids)
+      entity.resource_ids = JSON.stringify(
+        existResourceIds.concat(resource_ids),
+      )
       // TODO
       entity.tag_ids = JSON.stringify(param.tags)
       this.repo.update(
