@@ -13,7 +13,7 @@ import {
   DeleteMemoriaReq,
 } from '../../contract/memoria'
 import { Exception } from '../util/exception'
-import { getTimeStampByDate } from '../util/entity'
+import { convertEntityDateToUnix, convertToEntityDate } from '../util/entity'
 
 @Injectable()
 export class MemoriaService {
@@ -38,6 +38,7 @@ export class MemoriaService {
 
     memoria.title = param.title
     memoria.create_by = param.user_id
+    memoria.create_time = convertToEntityDate(param.create_time)
 
     const value = await this.repo.save(memoria)
 
@@ -60,8 +61,8 @@ export class MemoriaService {
         comments: JSON.parse(entity.comments),
         // TODO: get user info, not id
         create_by: entity.create_by,
-        create_time: getTimeStampByDate(entity.create_time),
-        update_time: getTimeStampByDate(entity.update_time),
+        create_time: convertEntityDateToUnix(entity.create_time),
+        update_time: convertEntityDateToUnix(entity.update_time),
         title: entity.title,
         feeling: entity.feeling,
         music: entity.music,
@@ -79,12 +80,13 @@ export class MemoriaService {
       id: param.id,
     })
     if (value) {
-      const updateInfo = {
+      const entity: Partial<MemoriaEntity> = {
         title: param.title,
         feeling: param.feeling || '',
         music: param.music || '',
         resource_ids: '',
         tag_ids: '',
+        create_time: convertToEntityDate(param.create_time),
       }
       const resourceIds = JSON.parse(value.resource_ids)
       await this.resourceService.deleteResource({
@@ -93,14 +95,14 @@ export class MemoriaService {
       const resource_ids = await this.resourceService.addResource({
         resources: param.resources,
       })
-      updateInfo.resource_ids = JSON.stringify(resource_ids)
+      entity.resource_ids = JSON.stringify(resource_ids)
       // TODO
-      updateInfo.tag_ids = JSON.stringify(param.tags)
+      entity.tag_ids = JSON.stringify(param.tags)
       this.repo.update(
         {
           id: param.id,
         },
-        updateInfo,
+        entity,
       )
     } else {
       throw new Exception(2000)

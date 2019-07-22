@@ -1,3 +1,5 @@
+import * as dayjs from 'dayjs'
+
 export const longLength = 2000
 
 export const columnOption = {
@@ -6,6 +8,14 @@ export const columnOption = {
     default: '',
   },
 }
-export const getTimeStampByDate = (date: Date) => {
-  return Number((date.getTime() / 1000).toFixed(0))
+export const convertEntityDateToUnix = (date: Date) => {
+  return dayjs(date.toString()).unix()
+}
+
+export const convertToEntityDate = (unix: number) => {
+  if (unix) {
+    return new Date(unix * 1000)
+  } else {
+    return null
+  }
 }
