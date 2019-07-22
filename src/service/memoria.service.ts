@@ -137,6 +137,7 @@ export class MemoriaService {
         id: x.id,
         title: x.title,
         thumb: x.thumb,
+        feeling: x.feeling
       })),
     }
   }
