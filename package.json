@@ -10,7 +10,7 @@
     "debug": "nodemon --config nodemon-debug.json",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "deploy": "node deploy/index.js",
+    "d": "node deploy/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
