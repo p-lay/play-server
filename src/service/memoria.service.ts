@@ -120,8 +120,11 @@ export class MemoriaService {
   }
 
   async deleteMemoria(param: DeleteMemoriaReq) {
-    await this.repo.delete({
+    const memoria = await this.repo.findOne({
       id: param.id,
     })
+    const resource_ids = JSON.parse(memoria.resource_ids)
+    await this.resourceService.deleteResource({ ids: resource_ids })
+    await this.repo.remove(memoria)
   }
 }

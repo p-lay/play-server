@@ -23,6 +23,7 @@ export class ResourceService {
       resource.url = x.url
       resource.description = x.description
       resource.type = x.type
+      resource.thumb = x.thumb || ''
       return resource
     })
     const value = await this.resourceRepo.save(result)
@@ -45,6 +46,7 @@ export class ResourceService {
         url: x.url,
         type: x.type as any,
         description: x.description,
+        thumb: x.thumb,
       })),
     }
   }

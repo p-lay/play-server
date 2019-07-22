@@ -19,6 +19,12 @@ export class ResourceEntity {
   url: string
 
   @Column({
+    length: 200,
+    default: '',
+  })
+  thumb: string
+
+  @Column({
     default: 'image',
   })
   type: string
