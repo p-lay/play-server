@@ -121,12 +121,17 @@ export class MemoriaService {
   }
 
   async getMemoriaList(param: GetMemoriaListReq): Promise<GetMemoriaListRes> {
-    const condition = param.create_by
+    const where = param.create_by
       ? {
           create_by: param.create_by,
         }
       : null
-    const memorias = await this.repo.find(condition)
+    const memorias = await this.repo.find({
+      order: {
+        create_time: 'DESC',
+      },
+      where,
+    })
     return {
       memorias: memorias.map(x => ({
         id: x.id,
