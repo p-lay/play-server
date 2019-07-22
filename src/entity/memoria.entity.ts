@@ -11,6 +11,12 @@ export class MemoriaEntity extends CommonEntity {
   title: string
 
   @Column({
+    length: 200,
+    default: '',
+  })
+  thumb: string
+
+  @Column({
     length: longLength,
     default: '',
   })

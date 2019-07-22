@@ -32,6 +32,7 @@ export class MemoriaService {
     const resources = param.resources
     const resource_ids = await this.resourceService.addResource({ resources })
     memoria.resource_ids = JSON.stringify(resource_ids)
+    memoria.thumb = param.thumb
 
     // TODO
     memoria.tag_ids = JSON.stringify(param.tags)
@@ -85,6 +86,7 @@ export class MemoriaService {
         feeling: param.feeling || '',
         music: param.music || '',
         resource_ids: '',
+        thumb: param.thumb,
         tag_ids: '',
         create_time: convertToEntityDate(param.create_time),
       }
@@ -126,7 +128,11 @@ export class MemoriaService {
       : null
     const memorias = await this.repo.find(condition)
     return {
-      memorias: memorias.map(x => ({ id: x.id, title: x.title })),
+      memorias: memorias.map(x => ({
+        id: x.id,
+        title: x.title,
+        thumb: x.thumb,
+      })),
     }
   }
 
