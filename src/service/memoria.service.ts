@@ -126,18 +126,17 @@ export class MemoriaService {
           create_by: param.create_by,
         }
       : null
-    const memorias = await this.repo.find({
-      order: {
-        create_time: 'DESC',
-      },
-      where,
-    })
+    const nickName = 'nick_name'
+    const memorias: MemoriaEntity[] = await this.repo.query(
+      `select *, user.name as ${nickName} from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
+    )
     return {
       memorias: memorias.map(x => ({
         id: x.id,
         title: x.title,
         thumb: x.thumb,
-        feeling: x.feeling
+        feeling: x.feeling,
+        creator: (x as any)[nickName],
       })),
     }
   }
