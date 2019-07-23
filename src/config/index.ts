@@ -1,6 +1,7 @@
 import { merge } from 'lodash'
 import { resolve } from 'path'
 import prodConfig from './prod'
+let secret = require('../../secret.json')
 
 const isSit = process.env.NODE_ENV === 'SIT'
 const isProd = process.env.NODE_ENV === 'PROD'
@@ -10,7 +11,7 @@ let config = {
   hostName: '0.0.0.0',
 
   AppID: 'wx543e380c0605e7f9',
-  AppSecret: '49031a6db6cac75896daf6ddb5d7641f', // !!!!!!!!!!!
+  AppSecret: secret.AppSecret,
 
   orm: {
     type: 'mysql',
@@ -30,7 +31,7 @@ let config = {
 
   qiniu: {
     ak: 'JveHPNkOjWM_S3a9LipKNz8vZdsJJkmTKzZNwenx',
-    sk: '_7_LKMIxOro5fbpx0LOcGCXq-lX6hsCHduZiw0fX', // !!!!!
+    sk: secret.qiniu_sk,
     bucket: 'matthew5-qiniu',
   },
 }
