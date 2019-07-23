@@ -19,7 +19,7 @@ let config = {
     username: 'root',
     password: '123456',
     database: 'play',
-    entities: [resolve(`./**/*.entity${isSit || isProd ? '.js' : '.ts'}`)],
+    entities: [resolve(`./**/*.entity${isSit ? '.js' : '.ts'}`)],
     timezone: 'UTC',
     charset: 'utf8mb4',
     multipleStatements: true,

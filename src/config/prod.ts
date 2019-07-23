@@ -1,11 +1,12 @@
+import { resolve } from 'path'
+
 export default {
   port: 3001,
   orm: {
-    port: 3311,
-    username: 'root',
-    password: '123456',
-    database: 'play-prod',
-    synchronize: false,
-    logging: true,
+    database: 'play_prod',
+    entities: [resolve(`./**/*.entity.js`)],
+  },
+  qiniu: {
+    bucket: 'play-qiniu',
   },
 }

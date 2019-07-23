@@ -11,6 +11,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "d": "node deploy/index.js",
+    "d:prod": "node deploy/index.js --prod",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
