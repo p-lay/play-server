@@ -11,6 +11,9 @@ execSync('git pull')
 console.log('building...')
 execSync('yarn build')
 
+console.log('copy...')
+execSync('cp secret.json dist/')
+
 let isNewIns = false
 try {
   execSync(`pm2 desc ${instanceName}`)
