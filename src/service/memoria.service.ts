@@ -127,7 +127,7 @@ export class MemoriaService {
         }
       : null
     const memorias: MemoriaEntity[] = await this.repo.query(
-      `select memoria.id as id, memoria.title as title, memoria.thumb as thumb, memoria.feeling as feeling, user.name as nick_name from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
+      `select memoria.id as id, memoria.title as title, memoria.thumb as thumb, memoria.feeling as feeling, user.name as nick_name, memoria.create_time from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
     )
     return {
       memorias: memorias.map(x => ({
@@ -136,6 +136,7 @@ export class MemoriaService {
         thumb: x.thumb,
         feeling: x.feeling,
         creator: x['nick_name'],
+        createTime: convertEntityDateToUnix(x.create_time)
       })),
     }
   }
