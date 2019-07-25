@@ -46,5 +46,10 @@ export class MemoriaEntity extends CommonEntity {
   })
   comments: string
 
+  @Column({
+    default: false,
+  })
+  is_large_data: boolean
+
   // stars by userStar table
 }

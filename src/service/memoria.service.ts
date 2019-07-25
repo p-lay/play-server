@@ -40,6 +40,7 @@ export class MemoriaService {
     memoria.title = param.title
     memoria.create_by = param.user_id
     memoria.create_time = convertToEntityDate(param.create_time)
+    memoria.is_large_data = param.isLargeData
 
     const value = await this.repo.save(memoria)
 
@@ -70,6 +71,7 @@ export class MemoriaService {
         resources: resourceRes.resources,
         // TODO
         tags: JSON.parse(entity.tag_ids),
+        isLargeData: entity.is_large_data,
       }
     } else {
       throw new Exception(2000)
@@ -89,6 +91,7 @@ export class MemoriaService {
         thumb: param.thumb,
         tag_ids: '',
         create_time: convertToEntityDate(param.create_time),
+        is_large_data: param.isLargeData,
       }
       const resourceIds: number[] = JSON.parse(value.resource_ids)
       const paramExistResourceIds = param.existResourceIds || []
@@ -126,8 +129,19 @@ export class MemoriaService {
           create_by: param.create_by,
         }
       : null
+    const selection = [
+      'memoria.id',
+      'memoria.title',
+      'memoria.thumb',
+      'memoria.feeling',
+      'user.name as nick_name',
+      'memoria.create_time',
+      'memoria.is_large_data',
+    ]
     const memorias: MemoriaEntity[] = await this.repo.query(
-      `select memoria.id as id, memoria.title as title, memoria.thumb as thumb, memoria.feeling as feeling, user.name as nick_name, memoria.create_time from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
+      `select ${selection.join(
+        ', ',
+      )} from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
     )
     return {
       memorias: memorias.map(x => ({
@@ -136,7 +150,8 @@ export class MemoriaService {
         thumb: x.thumb,
         feeling: x.feeling,
         creator: x['nick_name'],
-        createTime: convertEntityDateToUnix(x.create_time)
+        createTime: convertEntityDateToUnix(x.create_time),
+        isLargeData: x.is_large_data,
       })),
     }
   }
