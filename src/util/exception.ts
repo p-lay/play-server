@@ -24,6 +24,8 @@ export class Exception {
         return 'no data in table'
       case 3000:
         return 'data has relation, cannot be delete'
+        case 3100:
+        return 'duplicate data in table'
     }
   }
 }

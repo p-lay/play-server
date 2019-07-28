@@ -21,6 +21,11 @@ export class TagService {
   ) {}
 
   async addTag(param: AddTagReq): Promise<any> {
+    const result = await this.repo.findOne({
+      name: param.name,
+    })
+    if (!!result) throw new Exception(3100)
+
     const entity = new TagEntity()
     entity.name = param.name
     await this.repo.save(entity)
@@ -46,7 +51,7 @@ export class TagService {
         'tag.name as name',
         'relation.memoria_id as memoria_id',
       ]
-      const where = param.keyword ? `where relation.name like ?` : ''
+      const where = param.keyword ? `where tag.name like ?` : ''
       const queryStr = `select ${selection.join(
         ', ',
       )} from tag left join memoria_tag_relation relation on tag.id = relation.tag_id ${where}`
