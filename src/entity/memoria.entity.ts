@@ -24,10 +24,6 @@ export class MemoriaEntity extends CommonEntity {
 
   // json.stringify(array)
   @Column(columnOption.json)
-  tag_ids: string
-
-  // json.stringify(array)
-  @Column(columnOption.json)
   resource_ids: string
 
   @Column({

@@ -16,6 +16,6 @@ export const convertToEntityDate = (unix: number) => {
   if (unix) {
     return new Date(unix * 1000)
   } else {
-    return null
+    return undefined
   }
 }

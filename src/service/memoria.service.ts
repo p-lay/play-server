@@ -1,17 +1,19 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, Like } from 'typeorm'
+import { Repository, Like, In } from 'typeorm'
 import { MemoriaEntity } from '../entity/memoria.entity'
+import { MemoriaTagEntity } from '../entity/memoriaTag.entity'
 import { ResourceService } from './resource.service'
 import {
   AddMemoriaReq,
   GetMemoriaReq,
   GetMemoriaRes,
   UpdateMemoriaReq,
-  GetMemoriaListReq,
-  GetMemoriaListRes,
+  SearchMemoriaReq,
+  SearchMemoriaRes,
   DeleteMemoriaReq,
 } from '../../contract/memoria'
+import { Tag } from '../../contract/tag'
 import { Exception } from '../util/exception'
 import { convertEntityDateToUnix, convertToEntityDate } from '../util/entity'
 
@@ -20,9 +22,42 @@ export class MemoriaService {
   constructor(
     @InjectRepository(MemoriaEntity)
     private readonly repo: Repository<MemoriaEntity>,
+    @InjectRepository(MemoriaTagEntity)
+    private readonly memoriaTagRepo: Repository<MemoriaTagEntity>,
     @Inject(ResourceService)
     private readonly resourceService: ResourceService,
   ) {}
+
+  async getMemoriaTags(memoriaId: number): Promise<Tag[]> {
+    const selection = ['tag.id as id', 'tag.name as name']
+    const res = await this.repo.query(
+      `select ${selection.join(
+        ', ',
+      )} from memoria_tag_relation relation join tag on tag.id = relation.tag_id 
+      where relation.memoria_id = ?`,
+      [memoriaId.toString()],
+    )
+    return res.map(x => ({ id: x.id, name: x.name }))
+  }
+
+  async updateMemoriaTags(
+    memoriaId: number,
+    tags: Tag[],
+    disableDelete?: boolean,
+  ) {
+    if (!disableDelete) {
+      await this.memoriaTagRepo.delete({
+        memoria_id: memoriaId,
+      })
+    }
+    const entities = tags.map(x => {
+      const entity = new MemoriaTagEntity()
+      entity.memoria_id = memoriaId
+      entity.tag_id = x.id
+      return entity
+    })
+    await this.memoriaTagRepo.save(entities)
+  }
 
   async addMemoria(param: AddMemoriaReq) {
     const memoria = new MemoriaEntity()
@@ -34,9 +69,6 @@ export class MemoriaService {
     memoria.resource_ids = JSON.stringify(resource_ids)
     memoria.thumb = param.thumb
 
-    // TODO
-    memoria.tag_ids = JSON.stringify(param.tags)
-
     memoria.title = param.title
     memoria.create_by = param.user_id
     memoria.create_time = convertToEntityDate(param.create_time)
@@ -44,20 +76,21 @@ export class MemoriaService {
 
     const value = await this.repo.save(memoria)
 
+    await this.updateMemoriaTags(value.id, param.tags, true)
+
     return value
   }
 
   async getMemoria(param: GetMemoriaReq): Promise<GetMemoriaRes> {
-    const result = await this.repo.find({
+    const entity = await this.repo.findOne({
       id: param.id,
     })
-    if (result.length) {
-      const entity = result[0]
+    if (entity) {
       const resource_ids = JSON.parse(entity.resource_ids)
       const resourceRes = await this.resourceService.getResource({
         resource_ids,
       })
-      const tagIds = JSON.parse(entity.tag_ids)
+      const tags = await this.getMemoriaTags(param.id)
       return {
         id: entity.id,
         comments: JSON.parse(entity.comments),
@@ -69,8 +102,7 @@ export class MemoriaService {
         feeling: entity.feeling,
         music: entity.music,
         resources: resourceRes.resources,
-        // TODO
-        tags: JSON.parse(entity.tag_ids),
+        tags,
         isLargeData: entity.is_large_data,
       }
     } else {
@@ -89,7 +121,6 @@ export class MemoriaService {
         music: param.music || '',
         resource_ids: '',
         thumb: param.thumb,
-        tag_ids: '',
         create_time: convertToEntityDate(param.create_time),
         is_large_data: param.isLargeData,
       }
@@ -110,8 +141,8 @@ export class MemoriaService {
       entity.resource_ids = JSON.stringify(
         existResourceIds.concat(resource_ids),
       )
-      // TODO
-      entity.tag_ids = JSON.stringify(param.tags)
+      await this.updateMemoriaTags(param.id, param.tags)
+
       this.repo.update(
         {
           id: param.id,
@@ -123,14 +154,9 @@ export class MemoriaService {
     }
   }
 
-  async getMemoriaList(param: GetMemoriaListReq): Promise<GetMemoriaListRes> {
-    const where = param.create_by
-      ? {
-          create_by: param.create_by,
-        }
-      : null
+  async searchMemoria(param: SearchMemoriaReq): Promise<SearchMemoriaRes> {
     const selection = [
-      'memoria.id',
+      'distinct(memoria.id)',
       'memoria.title',
       'memoria.thumb',
       'memoria.feeling',
@@ -138,11 +164,33 @@ export class MemoriaService {
       'memoria.create_time',
       'memoria.is_large_data',
     ]
-    const memorias: MemoriaEntity[] = await this.repo.query(
-      `select ${selection.join(
-        ', ',
-      )} from memoria left join user on user.id = memoria.create_by order by memoria.create_time desc`,
-    )
+    const tagIds = param.tag_ids || []
+    let memorias: MemoriaEntity[] = []
+    if (tagIds.length) {
+      const andWhere = param.create_by ? `and memoria.create_by = ?` : ''
+
+      memorias = await this.repo.query(
+        `select ${selection.join(', ')} from memoria_tag_relation relation 
+        left join memoria on relation.memoria_id = memoria.id
+        left join user on user.id = memoria.create_by 
+        where relation.tag_id in (${tagIds.join(',')}) ${andWhere} 
+        order by memoria.create_time desc`,
+        [param.create_by],
+      )
+    } else {
+      const where = param.create_by
+        ? `where memoria.create_by = ?`
+        : `where 1 = 1`
+      memorias = await this.repo.query(
+        `select ${selection.join(
+          ', ',
+        )} from memoria left join user on user.id = memoria.create_by 
+      ${where}
+      order by memoria.create_time desc`,
+        [param.create_by],
+      )
+    }
+
     return {
       memorias: memorias.map(x => ({
         id: x.id,
