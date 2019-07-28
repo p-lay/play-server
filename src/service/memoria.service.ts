@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, Like } from 'typeorm'
 import { MemoriaEntity } from '../entity/memoria.entity'
 import { ResourceService } from './resource.service'
 import {

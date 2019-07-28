@@ -22,6 +22,8 @@ export class Exception {
         return 'empty value, not exception'
       case 2000:
         return 'no data in table'
+      case 3000:
+        return 'data has relation, cannot be delete'
     }
   }
 }
