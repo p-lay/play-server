@@ -6,7 +6,7 @@ import {
   SearchTagRes,
 } from '../../contract/tag'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, Like } from 'typeorm'
+import { Repository, Like, In } from 'typeorm'
 import { TagEntity } from '../entity/tag.entity'
 import { MemoriaTagEntity } from '../entity/memoriaTag.entity'
 import { Exception } from '../util/exception'
@@ -22,13 +22,17 @@ export class TagService {
 
   async addTag(param: AddTagReq): Promise<any> {
     const result = await this.repo.findOne({
-      name: param.name,
+      name: In(param.names),
     })
     if (!!result) throw new Exception(3100)
 
-    const entity = new TagEntity()
-    entity.name = param.name
-    await this.repo.save(entity)
+    const entities = param.names.map(tagName => {
+      const entity = new TagEntity()
+      entity.name = tagName
+      return entity
+    })
+
+    await this.repo.save(entities)
   }
 
   async deleteTag(param: DeleteTagReq): Promise<any> {
