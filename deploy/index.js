@@ -8,6 +8,9 @@ console.log('fetching...')
 execSync('git submodule update --remote')
 execSync('git pull')
 
+console.log('stopping...')
+execSync(`pm2 stop ${instanceName}`)
+
 console.log('building...')
 execSync('yarn build')
 
@@ -28,10 +31,10 @@ try {
       `pm2 start ./deploy/play.pm2.yaml ${isProd ? '--env production' : ''} --update-env`,
     )
   } else {
-    execSync(`pm2 restart ${instanceName}`)
+    execSync(`pm2 start ${instanceName}`)
   }
 } catch (err) {
-  console.log(`!!!${isNewIns ? 'new' : 'restart'} error`, err)
+  console.log(`!!!${isNewIns ? 'new' : 'start'} error`, err)
 }
 
 console.log('finish')
