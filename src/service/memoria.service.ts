@@ -11,6 +11,7 @@ import {
   UpdateMemoriaReq,
   SearchMemoriaReq,
   SearchMemoriaRes,
+  SearchMemoriaItem,
   DeleteMemoriaReq,
 } from '../../contract/memoria'
 import { Tag } from '../../contract/tag'
@@ -160,6 +161,7 @@ export class MemoriaService {
       'memoria.title',
       'memoria.thumb',
       'memoria.feeling',
+      'memoria.create_by as create_by',
       'user.name as nick_name',
       'memoria.create_time',
       'memoria.is_large_data',
@@ -197,7 +199,7 @@ export class MemoriaService {
       )
     }
 
-    const memorias = []
+    const memorias: SearchMemoriaItem[] = []
     memoriaResult.forEach(memoria => {
       const found = memorias.find(x => x.id == memoria.id)
       const tagName = memoria['tag_name']
@@ -207,7 +209,10 @@ export class MemoriaService {
           title: memoria.title,
           thumb: memoria.thumb,
           feeling: memoria.feeling,
-          creator: memoria['nick_name'],
+          creator: {
+            id: memoria.create_by,
+            name: memoria['nick_name'],
+          },
           createTime: convertEntityDateToUnix(memoria.create_time),
           isLargeData: memoria.is_large_data,
           resourceCount: (JSON.parse(memoria['resource_ids']) || []).length,
