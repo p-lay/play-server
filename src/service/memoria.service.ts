@@ -163,16 +163,20 @@ export class MemoriaService {
       'user.name as nick_name',
       'memoria.create_time',
       'memoria.is_large_data',
+      'memoria.resource_ids',
+      'tag.name as tag_name',
     ]
     const tagIds = param.tag_ids || []
-    let memorias: MemoriaEntity[] = []
+    let memoriaResult: MemoriaEntity[] = []
     if (tagIds.length) {
       const andWhere = param.create_by ? `and memoria.create_by = ?` : ''
 
-      memorias = await this.repo.query(
+      // first left join memoria to relation, maybe it can query less data?
+      memoriaResult = await this.repo.query(
         `select ${selection.join(', ')} from memoria_tag_relation relation 
         left join memoria on relation.memoria_id = memoria.id
         left join user on user.id = memoria.create_by 
+        left join tag on tag.id = relation.tag_id
         where relation.tag_id in (${tagIds.join(',')}) ${andWhere} 
         order by memoria.create_time desc`,
         [param.create_by],
@@ -181,26 +185,40 @@ export class MemoriaService {
       const where = param.create_by
         ? `where memoria.create_by = ?`
         : `where 1 = 1`
-      memorias = await this.repo.query(
+      memoriaResult = await this.repo.query(
         `select ${selection.join(
           ', ',
         )} from memoria left join user on user.id = memoria.create_by 
+        left join memoria_tag_relation relation on relation.memoria_id = memoria.id
+        left join tag on tag.id = relation.tag_id
       ${where}
       order by memoria.create_time desc`,
         [param.create_by],
       )
     }
 
+    const memorias = []
+    memoriaResult.forEach(memoria => {
+      const found = memorias.find(x => x.id == memoria.id)
+      const tagName = memoria['tag_name']
+      if (!found) {
+        memorias.push({
+          id: memoria.id,
+          title: memoria.title,
+          thumb: memoria.thumb,
+          feeling: memoria.feeling,
+          creator: memoria['nick_name'],
+          createTime: convertEntityDateToUnix(memoria.create_time),
+          isLargeData: memoria.is_large_data,
+          resourceCount: (JSON.parse(memoria['resource_ids']) || []).length,
+          tagNames: tagName ? [tagName] : [],
+        })
+      } else {
+        tagName && found.tagNames.push(tagName)
+      }
+    })
     return {
-      memorias: memorias.map(x => ({
-        id: x.id,
-        title: x.title,
-        thumb: x.thumb,
-        feeling: x.feeling,
-        creator: x['nick_name'],
-        createTime: convertEntityDateToUnix(x.create_time),
-        isLargeData: x.is_large_data,
-      })),
+      memorias,
     }
   }
 
