@@ -8,15 +8,6 @@ console.log('fetching...')
 execSync('git submodule update --remote')
 execSync('git pull')
 
-console.log('stopping...')
-execSync(`pm2 stop ${instanceName}`)
-
-console.log('building...')
-execSync('yarn build')
-
-console.log('copy...')
-execSync('cp secret.json dist/')
-
 let isNewIns = false
 try {
   execSync(`pm2 desc ${instanceName}`)
@@ -24,11 +15,24 @@ try {
   isNewIns = err.message.includes("doesn't exist")
 }
 
+if (!isNewIns) {
+  console.log('stopping...')
+  execSync(`pm2 stop ${instanceName}`)
+}
+
+console.log('building...')
+execSync('yarn build')
+
+console.log('copy...')
+execSync('cp secret.json dist/')
+
 console.log(`deploying...`)
 try {
   if (isNewIns) {
     execSync(
-      `pm2 start ./deploy/play.pm2.yaml ${isProd ? '--env production' : ''} --update-env`,
+      `pm2 start ./deploy/play.pm2.yaml ${
+        isProd ? '--env production' : ''
+      } --update-env`,
     )
   } else {
     execSync(`pm2 start ${instanceName}`)
