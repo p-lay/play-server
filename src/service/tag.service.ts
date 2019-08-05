@@ -53,26 +53,22 @@ export class TagService {
       const selection = [
         'tag.id as id',
         'tag.name as name',
-        'relation.memoria_id as memoria_id',
+        'GROUP_CONCAT(relation.memoria_id order by relation.memoria_id desc) as memoria_ids',
       ]
+      const groupBy = ['tag.id', 'tag.name']
       const where = param.keyword ? `where tag.name like ?` : ''
       const queryStr = `select ${selection.join(
         ', ',
-      )} from tag left join memoria_tag_relation relation on tag.id = relation.tag_id ${where}`
+      )} from tag left join memoria_tag_relation relation on tag.id = relation.tag_id 
+      ${where}
+      group by ${groupBy.join(', ')}`
+
       const res = await this.repo.query(queryStr, [`%${param.keyword}%`])
-      res.forEach(entity => {
-        const tag = tagRes.tags.find(x => x.id == entity.id)
-        if (tag) {
-          entity.memoria_id && tag.memoriaIds.push(entity.memoria_id)
-        } else {
-          const memoriaIds = entity.memoria_id ? [entity.memoria_id] : []
-          tagRes.tags.push({
-            id: entity.id,
-            name: entity.name,
-            memoriaIds,
-          })
-        }
-      })
+      tagRes.tags = res.map(x => ({
+        id: x.id,
+        name: x.name,
+        memoriaIds: (x['memoria_ids'] || '').split(','),
+      }))
     } else {
       const condition = param.keyword
         ? {

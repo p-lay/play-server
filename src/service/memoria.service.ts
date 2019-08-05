@@ -30,6 +30,7 @@ export class MemoriaService {
   ) {}
 
   async getMemoriaTags(memoriaId: number): Promise<Tag[]> {
+    this.repo.find()
     const selection = ['tag.id as id', 'tag.name as name']
     const res = await this.repo.query(
       `select ${selection.join(
@@ -157,16 +158,27 @@ export class MemoriaService {
 
   async searchMemoria(param: SearchMemoriaReq): Promise<SearchMemoriaRes> {
     const selection = [
-      'distinct(memoria.id)',
+      'memoria.id',
       'memoria.title',
       'memoria.thumb',
       'memoria.feeling',
-      'memoria.create_by as create_by',
+      'memoria.create_by',
       'user.name as nick_name',
       'memoria.create_time',
       'memoria.is_large_data',
       'memoria.resource_ids',
-      'tag.name as tag_name',
+      'GROUP_CONCAT(tag.name) as tag_names',
+    ]
+    const groupBy = [
+      'memoria.id',
+      'memoria.title',
+      'memoria.thumb',
+      'memoria.feeling',
+      'memoria.create_by',
+      'user.name',
+      'memoria.create_time',
+      'memoria.is_large_data',
+      'memoria.resource_ids',
     ]
     const tagIds = param.tag_ids || []
     let memoriaResult: MemoriaEntity[] = []
@@ -179,7 +191,8 @@ export class MemoriaService {
         left join memoria on relation.memoria_id = memoria.id
         left join user on user.id = memoria.create_by 
         left join tag on tag.id = relation.tag_id
-        where relation.tag_id in (${tagIds.join(',')}) ${andWhere} 
+        where relation.tag_id in (${tagIds.join(',')}) ${andWhere}
+        group by ${groupBy.join(', ')} 
         order by memoria.create_time desc`,
         [param.create_by],
       )
@@ -194,34 +207,31 @@ export class MemoriaService {
         left join memoria_tag_relation relation on relation.memoria_id = memoria.id
         left join tag on tag.id = relation.tag_id
       ${where}
+      group by ${groupBy.join(', ')} 
       order by memoria.create_time desc`,
         [param.create_by],
       )
     }
 
-    const memorias: SearchMemoriaItem[] = []
-    memoriaResult.forEach(memoria => {
-      const found = memorias.find(x => x.id == memoria.id)
-      const tagName = memoria['tag_name']
-      if (!found) {
-        memorias.push({
-          id: memoria.id,
-          title: memoria.title,
-          thumb: memoria.thumb,
-          feeling: memoria.feeling,
-          creator: {
-            id: memoria.create_by,
-            name: memoria['nick_name'],
-          },
-          createTime: convertEntityDateToUnix(memoria.create_time),
-          isLargeData: memoria.is_large_data,
-          resourceCount: (JSON.parse(memoria['resource_ids']) || []).length,
-          tagNames: tagName ? [tagName] : [],
-        })
-      } else {
-        tagName && found.tagNames.push(tagName)
+    const memorias = memoriaResult.map(memoria => {
+      const tag_names = memoria['tag_names'] || ''
+      const result: SearchMemoriaItem = {
+        id: memoria.id,
+        title: memoria.title,
+        thumb: memoria.thumb,
+        feeling: memoria.feeling,
+        creator: {
+          id: memoria.create_by,
+          name: memoria['nick_name'],
+        },
+        createTime: convertEntityDateToUnix(memoria.create_time),
+        isLargeData: memoria.is_large_data,
+        resourceCount: (JSON.parse(memoria['resource_ids']) || []).length,
+        tagNames: tag_names.split(','),
       }
+      return result
     })
+    
     return {
       memorias,
     }
