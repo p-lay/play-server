@@ -19,3 +19,12 @@ export const convertToEntityDate = (unix: number) => {
     return undefined
   }
 }
+
+export const getGroupConcatValue = (queryResult: string): string[] => {
+  const strValue = queryResult || ''
+  if (strValue) {
+    return strValue.split(',')
+  } else {
+    return []
+  }
+}

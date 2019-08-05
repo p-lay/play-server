@@ -16,7 +16,11 @@ import {
 } from '../../contract/memoria'
 import { Tag } from '../../contract/tag'
 import { Exception } from '../util/exception'
-import { convertEntityDateToUnix, convertToEntityDate } from '../util/entity'
+import {
+  convertEntityDateToUnix,
+  convertToEntityDate,
+  getGroupConcatValue,
+} from '../util/entity'
 
 @Injectable()
 export class MemoriaService {
@@ -214,7 +218,6 @@ export class MemoriaService {
     }
 
     const memorias = memoriaResult.map(memoria => {
-      const tag_names = memoria['tag_names'] || ''
       const result: SearchMemoriaItem = {
         id: memoria.id,
         title: memoria.title,
@@ -227,11 +230,11 @@ export class MemoriaService {
         createTime: convertEntityDateToUnix(memoria.create_time),
         isLargeData: memoria.is_large_data,
         resourceCount: (JSON.parse(memoria['resource_ids']) || []).length,
-        tagNames: tag_names.split(','),
+        tagNames: getGroupConcatValue(memoria['tag_names']),
       }
       return result
     })
-    
+
     return {
       memorias,
     }

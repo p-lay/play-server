@@ -10,6 +10,7 @@ import { Repository, Like, In } from 'typeorm'
 import { TagEntity } from '../entity/tag.entity'
 import { MemoriaTagEntity } from '../entity/memoriaTag.entity'
 import { Exception } from '../util/exception'
+import { getGroupConcatValue } from '../util/entity'
 
 @Injectable()
 export class TagService {
@@ -67,7 +68,7 @@ export class TagService {
       tagRes.tags = res.map(x => ({
         id: x.id,
         name: x.name,
-        memoriaIds: (x['memoria_ids'] || '').split(','),
+        memoriaIds: getGroupConcatValue(x['memoria_ids']),
       }))
     } else {
       const condition = param.keyword
