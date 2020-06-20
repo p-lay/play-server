@@ -7,8 +7,10 @@ import {
   GetResourceReq,
   GetResourceRes,
   DeleteResourceReq,
+  BaseResource,
 } from '../../contract/resource'
 import { In } from 'typeorm'
+import { request } from '../util/request'
 
 @Injectable()
 export class ResourceService {
@@ -30,6 +32,20 @@ export class ResourceService {
     return value.map(x => x.id)
   }
 
+  async updateDuration(resources: BaseResource[]) {
+    const videos = resources.filter(x => x.type === 'video')
+    const durationPromises = videos.map(async video => {
+      const res = await request.get(video.url + '?avinfo')
+      const second = res.data.format.duration
+      return second.match(/\d+/)[0]
+    })
+    await Promise.all(durationPromises).then(durations => {
+      durations.forEach((duration, index) => {
+        videos[index].duration = duration
+      })
+    })
+  }
+
   async getResource(param: GetResourceReq): Promise<GetResourceRes> {
     if (!param.resource_ids.length) {
       return {
@@ -40,14 +56,18 @@ export class ResourceService {
     const entities = await this.resourceRepo.find({
       id: In(param.resource_ids),
     })
+    const resources = entities.map(x => ({
+      id: x.id,
+      url: x.url,
+      type: x.type as any,
+      description: x.description,
+      thumb: x.type === 'video' ? x.url + '?vframe/jpg/offset/0' : x.url,
+    }))
+
+    await this.updateDuration(resources)
+
     return {
-      resources: entities.map(x => ({
-        id: x.id,
-        url: x.url,
-        type: x.type as any,
-        description: x.description,
-        thumb: x.thumb,
-      })),
+      resources,
     }
   }
 
