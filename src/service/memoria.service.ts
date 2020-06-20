@@ -11,7 +11,6 @@ import {
   UpdateMemoriaReq,
   SearchMemoriaReq,
   SearchMemoriaRes,
-  SearchMemoriaItem,
   DeleteMemoriaReq,
 } from '../../contract/memoria'
 import { Tag } from '../../contract/tag'
@@ -218,7 +217,7 @@ export class MemoriaService {
     }
 
     const memorias = memoriaResult.map(memoria => {
-      const result: SearchMemoriaItem = {
+      const result = {
         id: memoria.id,
         title: memoria.title,
         thumb: memoria.thumb,
