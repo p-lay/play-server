@@ -20,12 +20,15 @@ if (!isNewIns) {
   execSync(`pm2 stop ${instanceName}`)
 }
 
+console.log('installing...')
+execSync('yarn')
+
 console.log('building...')
 execSync('yarn build')
 
 console.log('copy...')
 execSync('cp secret.json dist/')
-// execSync('cp -fr ./rsa dist/')
+execSync('cp -r ./rsa dist/')
 
 console.log(`deploying...`)
 try {
