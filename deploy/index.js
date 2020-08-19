@@ -25,6 +25,7 @@ execSync('yarn build')
 
 console.log('copy...')
 execSync('cp secret.json dist/')
+execSync('cp -r ./rsa dist/')
 
 console.log(`deploying...`)
 try {
