@@ -89,6 +89,9 @@ export class CouponService {
           used_by: param.user_id,
         },
       )
+      return {
+        useFailed: false,
+      }
     } else {
       return {
         useFailed: true,
