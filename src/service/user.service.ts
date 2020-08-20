@@ -69,4 +69,26 @@ export class UserService {
       await this.repo.save(entity)
     }
   }
+
+  async getUserById(userId: number) {
+    const entity = await this.repo.findOne({
+      id: userId,
+    })
+    if (entity) {
+      return {
+        userId: entity.id,
+        roleId: entity.role_id,
+        nickName: entity.name,
+        avatarUrl: entity.avatar,
+        gender: entity.gender,
+        province: entity.province,
+        city: entity.city,
+        country: entity.country,
+        language: entity.language,
+        isNew: !entity.name || !entity.avatar,
+      }
+    } else {
+      return null
+    }
+  }
 }

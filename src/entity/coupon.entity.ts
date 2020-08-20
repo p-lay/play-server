@@ -15,4 +15,12 @@ export class CouponEntity extends CommonEntity {
     default: '',
   })
   rsa: string
+
+  @Column()
+  creator: number
+
+  @Column({
+    default: 0,
+  })
+  used_by: number
 }
