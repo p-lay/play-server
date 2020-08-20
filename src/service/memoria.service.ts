@@ -109,6 +109,7 @@ export class MemoriaService {
         resources: resourceRes.resources,
         tags,
         isLargeData: entity.is_large_data,
+        thumb: entity.thumb,
       }
     } else {
       throw new Exception(2000)
